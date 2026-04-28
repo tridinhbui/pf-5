@@ -11,6 +11,7 @@ import {
   MapPin,
   MessageSquare,
   X,
+  Menu,
 } from 'lucide-react';
 
 import anh1 from './assets/anh1.jpeg';
@@ -18,6 +19,33 @@ import anh2 from './assets/anh2.jpeg';
 import anh3 from './assets/anh3.jpeg';
 import anh4 from './assets/anh2.jpeg';
 import './index.css';
+
+const NAV_LINKS = [
+  { href: '#about', label: 'About' },
+  { href: '#education', label: 'Education' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#leadership', label: 'Leadership' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#contact', label: 'Contact' },
+] as const;
+
+const heroContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.11, delayChildren: 0.06, duration: 0.4 },
+  },
+};
+
+const heroItem = {
+  hidden: { opacity: 0, y: 36, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
 
 const LINKEDIN = 'https://www.linkedin.com/in/phong-tran';
 const EMAIL = 'phongtran@nyu.edu';
@@ -148,6 +176,16 @@ const LoadingScreen = () => {
   return (
     <motion.div className="loading-screen" exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
       <motion.div
+        aria-hidden
+        className="loader-aurora"
+        animate={{
+          rotate: [0, 360],
+          scale: [1, 1.08, 1],
+          opacity: [0.55, 0.85, 0.55],
+        }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+      />
+      <motion.div
         className="loader-logo"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -176,11 +214,14 @@ type ExpProps = {
 
 const ExperienceCard = ({ company, role, location, date, descs }: ExpProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 28 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-    whileHover={{ y: -4, transition: { duration: 0.22 } }}
-    viewport={{ once: true, margin: '-40px 0px' }}
+    initial={{ opacity: 0, y: 48, filter: 'blur(12px)' }}
+    whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+    transition={{
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
+    }}
+    whileHover={{ y: -8, transition: { duration: 0.35, ease: [0.34, 1.56, 0.64, 1] } }}
+    viewport={{ once: true, margin: '-60px 0px', amount: 0.25 }}
     className="exp-card"
   >
     <div className="exp-date">
@@ -203,13 +244,30 @@ const ExperienceCard = ({ company, role, location, date, descs }: ExpProps) => (
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 32 });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 28 });
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1900);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   const iconColor = 'var(--text)';
 
@@ -217,29 +275,40 @@ function App() {
     <div className="app-main">
       <AnimatePresence>{loading && <LoadingScreen key="loader" />}</AnimatePresence>
 
-      <div className="mesh-gradient" />
+      <div className="mesh-gradient" aria-hidden="true">
+        <span className="aurora-blob aurora-blob-a" />
+        <span className="aurora-blob aurora-blob-b" />
+        <span className="aurora-blob aurora-blob-c" />
+      </div>
       <motion.div className="scroll-progress" style={{ scaleX, transformOrigin: '0%' }} />
 
       {!loading && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9 }}>
-          <nav>
-            <span className="nav-brand">P. TRAN</span>
+          <nav className={`nav-shell${menuOpen ? ' nav-shell--menu-open' : ''}`}>
+            <motion.span
+              className="nav-brand"
+              layout
+              transition={{ duration: 0.4 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              P. TRAN
+            </motion.span>
+            <button
+              type="button"
+              className="nav-menu-toggle"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav-drawer"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <X size={22} strokeWidth={2} /> : <Menu size={22} strokeWidth={2} />}
+            </button>
             <ul className="nav-links">
-              <li>
-                <a href="#about">About</a>
-              </li>
-              <li>
-                <a href="#education">Education</a>
-              </li>
-              <li>
-                <a href="#experience">Experience</a>
-              </li>
-              <li>
-                <a href="#leadership">Leadership</a>
-              </li>
-              <li>
-                <a href="#skills">Skills</a>
-              </li>
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
             </ul>
             <div className="nav-actions">
               <a className="nav-icon-btn" href={`mailto:${EMAIL}`} aria-label="Email">
@@ -257,20 +326,83 @@ function App() {
             </div>
           </nav>
 
+          <AnimatePresence>
+            {menuOpen && (
+              <>
+                <motion.div
+                  key="nav-backdrop"
+                  className="nav-mobile-backdrop"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={closeMenu}
+                  aria-hidden
+                />
+                <motion.div
+                  id="mobile-nav-drawer"
+                  key="nav-drawer"
+                  className="nav-mobile-drawer"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Navigation"
+                  initial={{ opacity: 0, x: '102%' }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: '102%' }}
+                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <motion.ul
+                    className="nav-mobile-links"
+                    variants={{
+                      hidden: {},
+                      visible: {
+                        opacity: 1,
+                        transition: { staggerChildren: 0.08, delayChildren: 0.06 },
+                      },
+                    }}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    {NAV_LINKS.map((link) => (
+                      <motion.li
+                        key={link.href}
+                        variants={{
+                          hidden: { opacity: 0, x: 40 },
+                          visible: {
+                            opacity: 1,
+                            x: 0,
+                            transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                          },
+                        }}
+                      >
+                        <a href={link.href} onClick={closeMenu}>
+                          {link.label}
+                        </a>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
           <main>
             <section className="hero">
               <motion.div
                 className="hero-content"
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.85, delay: 0.05 }}
+                variants={heroContainer}
+                initial="hidden"
+                animate="show"
               >
-                <span className="hero-eyebrow">NYU Stern · Finance + Data Science</span>
-                <h1 className="hero-title">
+                <motion.span className="hero-eyebrow" variants={heroItem}>
+                  NYU Stern · Finance + Data Science
+                </motion.span>
+                <motion.h1 className="hero-title" variants={heroItem}>
                   Phong
                   <br />
                   <span className="gradient-text">Tran</span>
-                </h1>
+                </motion.h1>
+                <motion.div variants={heroItem}>
                 <p className="hero-lede">
                   I am an investment-focused undergraduate with hands-on experience across{' '}
                   <span className="key-pill">venture capital</span>,{' '}
@@ -281,8 +413,8 @@ function App() {
                   <span className="key-pill">market intelligence</span>.
                 </p>
                 <div className="hero-meta">
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                    <MapPin size={15} strokeWidth={1.75} style={{ opacity: 0.55 }} />
+                  <span className="hero-meta-row">
+                    <MapPin size={15} strokeWidth={1.75} />
                     New York, NY 10003
                   </span>
                   <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
@@ -292,7 +424,7 @@ function App() {
                   </a>
                 </div>
                 <div className="hero-cta-row">
-                  <motion.a href={`mailto:${EMAIL}`} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <motion.a href={`mailto:${EMAIL}`} whileHover={{ y: -4, scale: 1.02 }} whileTap={{ scale: 0.96 }}>
                     <span className="btn-primary" style={{ display: 'inline-block' }}>
                       Email
                     </span>
@@ -301,26 +433,35 @@ function App() {
                     href={LINKEDIN}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
                   >
                     <span className="btn-ghost" style={{ display: 'inline-block' }}>
                       LinkedIn
                     </span>
                   </motion.a>
                 </div>
+                </motion.div>
               </motion.div>
 
               <motion.div
                 className="hero-visual"
-                initial={{ opacity: 0, scale: 0.97 }}
+                initial={{ opacity: 0, scale: 0.88 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.15 }}
+                transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               >
                 <motion.div
                   className="hero-frame float-loop glow-loop"
-                  animate={{ y: [0, -8, 0], rotate: [0, 0.3, 0] }}
-                  transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+                  animate={{
+                    y: [0, -14, 0],
+                    rotate: [0, -0.5, 0.5, 0],
+                  }}
+                  transition={{
+                    duration: 6.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  whileHover={{ scale: 1.03 }}
                 >
                   <div className="photo-badge">GPA 3.9</div>
                   <img src={anh1} alt="Phong Tran portrait" className="main-img" />
