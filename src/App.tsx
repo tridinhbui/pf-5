@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import {
-  ArrowRight,
   TrendingUp,
   BarChart3,
   PieChart,
@@ -17,30 +16,30 @@ import {
 import anh1 from './assets/anh1.jpeg';
 import anh2 from './assets/anh2.jpeg';
 import anh3 from './assets/anh3.jpeg';
-import anh4 from './assets/anh4.jpeg';
+import anh4 from './assets/anh2.jpeg';
 import './index.css';
 
-const LINKEDIN = 'https://www.linkedin.com/in/hoanglevu-tony/';
-const EMAIL = 'lehoang@bu.edu';
-const PHONE_DISPLAY = '470-385-9181';
-const PHONE_HREF = 'tel:+14703859181';
+const LINKEDIN = 'https://www.linkedin.com/in/phong-tran';
+const EMAIL = 'phongtran@nyu.edu';
+const PHONE_DISPLAY = '(857) 395-2309';
+const PHONE_HREF = 'tel:+18573952309';
 
 const questions = [
   {
-    q: 'What problem do you solve for teams?',
-    a: 'I turn messy financials into clear repayment signals, defendable valuation ranges, and decks that a credit committee or IC can actually use—without hand-waving.',
+    q: 'What kind of investment work do you focus on?',
+    a: 'I focus on healthcare-oriented investment analysis: market sizing, benchmarking, valuation work, and due diligence support for early-stage and lower-middle-market opportunities.',
   },
   {
-    q: 'Vietnam bank internship in one sentence?',
-    a: 'SME tape at scale: 100+ files, internal scores, and diligence that cut turnaround time while keeping risk policy intact.',
+    q: 'What do you do at Golden Gate Ventures?',
+    a: 'I screen inbound startups, build research around white-space opportunities, and support diligence on potential $2M-$5M investments with market and competitor analysis.',
   },
   {
-    q: 'What makes your project work stand out?',
-    a: 'Two end-to-end narratives: a multifamily DCF with explicit exit math, and a Goldman Sachs comp + DCF stack with segment-level drivers—not just a template.',
+    q: 'What are your strongest technical skills?',
+    a: 'Financial modeling, DCF/comparable valuation, market research, and clear investment memo writing. I also use Python/SQL and BI tools when analysis needs more structure.',
   },
   {
-    q: 'Tools you live in?',
-    a: 'Excel for structure, SQL when the data gets wide, PowerPoint when the story has to land in one room.',
+    q: 'What roles are you pursuing next?',
+    a: 'I am actively pursuing internships in credit, private credit, investment banking, and private equity where analytical rigor and disciplined downside thinking matter.',
   },
 ];
 
@@ -50,7 +49,7 @@ const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      text: 'Quick prompts below — pick one to see how Hoang frames his work (no login, no tracking).',
+      text: 'Ask a quick question to see how Phong approaches investing and diligence.',
       sender: 'bot',
     },
   ]);
@@ -88,7 +87,7 @@ const ChatBot = () => {
           >
             <div className="chat-window">
               <div className="chat-header">
-                <h4>Ask Hoang</h4>
+                <h4>Ask Phong</h4>
                 <div
                   style={{
                     width: 8,
@@ -112,7 +111,7 @@ const ChatBot = () => {
                 ))}
                 {isTyping && (
                   <div className="msg msg-bot" style={{ opacity: 0.65 }}>
-                    …
+                    ...
                   </div>
                 )}
               </div>
@@ -153,7 +152,7 @@ const LoadingScreen = () => {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        H. L. VU
+        PHONG TRAN
       </motion.div>
       <div className="loader-bar-bg">
         <motion.div
@@ -177,9 +176,11 @@ type ExpProps = {
 
 const ExperienceCard = ({ company, role, location, date, descs }: ExpProps) => (
   <motion.div
-    initial={{ opacity: 0, x: -16 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
+    initial={{ opacity: 0, y: 28 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+    whileHover={{ y: -4, transition: { duration: 0.22 } }}
+    viewport={{ once: true, margin: '-40px 0px' }}
     className="exp-card"
   >
     <div className="exp-date">
@@ -200,34 +201,6 @@ const ExperienceCard = ({ company, role, location, date, descs }: ExpProps) => (
   </motion.div>
 );
 
-type ProjectProps = {
-  title: string;
-  badge: string;
-  bullets: { label: string; text: string }[];
-};
-
-const ProjectCard = ({ title, badge, bullets }: ProjectProps) => (
-  <motion.div
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="crystal-panel card-3d"
-  >
-    <span className="badge">{badge}</span>
-    <h3 className="project-card-title">{title}</h3>
-    <ul className="project-bullets">
-      {bullets.map((b, i) => (
-        <li key={i}>
-          <strong>{b.label}</strong> {b.text}
-        </li>
-      ))}
-    </ul>
-    <motion.a href="#contact" className="project-link" whileHover={{ x: 6 }}>
-      Start a conversation <ArrowRight size={14} strokeWidth={2.5} />
-    </motion.a>
-  </motion.div>
-);
-
 function App() {
   const [loading, setLoading] = useState(true);
   const { scrollYProgress } = useScroll();
@@ -245,31 +218,27 @@ function App() {
       <AnimatePresence>{loading && <LoadingScreen key="loader" />}</AnimatePresence>
 
       <div className="mesh-gradient" />
-
       <motion.div className="scroll-progress" style={{ scaleX, transformOrigin: '0%' }} />
 
       {!loading && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9 }}>
           <nav>
-            <span className="nav-brand">H. L. VU</span>
+            <span className="nav-brand">P. TRAN</span>
             <ul className="nav-links">
               <li>
-                <a href="#about">Method</a>
+                <a href="#about">About</a>
               </li>
               <li>
-                <a href="#education">Study</a>
+                <a href="#education">Education</a>
               </li>
               <li>
-                <a href="#experience">Roles</a>
+                <a href="#experience">Experience</a>
               </li>
               <li>
-                <a href="#leadership">Lead</a>
+                <a href="#leadership">Leadership</a>
               </li>
               <li>
-                <a href="#projects">Cases</a>
-              </li>
-              <li>
-                <a href="#skills">Stack</a>
+                <a href="#skills">Skills</a>
               </li>
             </ul>
             <div className="nav-actions">
@@ -296,28 +265,30 @@ function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.85, delay: 0.05 }}
               >
-                <span className="hero-eyebrow">Portfolio · Boston University · Finance</span>
+                <span className="hero-eyebrow">NYU Stern · Finance + Data Science</span>
                 <h1 className="hero-title">
-                  Hoang Le
+                  Phong
                   <br />
-                  <span className="gradient-text">Vu</span>
+                  <span className="gradient-text">Tran</span>
                 </h1>
                 <p className="hero-lede">
-                  I work at the intersection of{' '}
-                  <strong style={{ color: 'var(--text)', fontWeight: 600 }}>commercial credit</strong>,{' '}
-                  <strong style={{ color: 'var(--text)', fontWeight: 600 }}>public-market valuation</strong>, and{' '}
-                  <strong style={{ color: 'var(--text)', fontWeight: 600 }}>consumer P&amp;L</strong>—so the same
-                  person who stress-tests a loan book can also explain why a target price moved 15%.
+                  I am an investment-focused undergraduate with hands-on experience across{' '}
+                  <span className="key-pill">venture capital</span>,{' '}
+                  <span className="key-pill">healthcare investing</span>, and{' '}
+                  <span className="key-pill">private market research</span>. I build clear, decision-ready
+                  analysis through <span className="key-pill">valuation</span>,{' '}
+                  <span className="key-pill">due diligence</span>, and{' '}
+                  <span className="key-pill">market intelligence</span>.
                 </p>
                 <div className="hero-meta">
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                     <MapPin size={15} strokeWidth={1.75} style={{ opacity: 0.55 }} />
-                    33 Buswell St., Boston, MA 02215
+                    New York, NY 10003
                   </span>
                   <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
                   <a href={PHONE_HREF}>{PHONE_DISPLAY}</a>
                   <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">
-                    Profile
+                    LinkedIn
                   </a>
                 </div>
                 <div className="hero-cta-row">
@@ -346,41 +317,47 @@ function App() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.15 }}
               >
-                <div className="hero-frame">
-                  <div className="photo-badge">GPA 3.93</div>
-                  <img src={anh1} alt="Hoang Le Vu — portrait" className="main-img" />
-                </div>
+                <motion.div
+                  className="hero-frame float-loop glow-loop"
+                  animate={{ y: [0, -8, 0], rotate: [0, 0.3, 0] }}
+                  transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <div className="photo-badge">GPA 3.9</div>
+                  <img src={anh1} alt="Phong Tran portrait" className="main-img" />
+                </motion.div>
               </motion.div>
             </section>
 
-            <section id="about" style={{ borderTop: '1px solid var(--line)' }}>
+            <section id="about" className="section-band section-band-alt">
+              <div className="section-shell">
               <div className="section-head">
-                <span className="section-label">Method</span>
-                <h2 className="section-title">Evidence first, narrative second</h2>
+                <span className="section-label">About</span>
+                <h2 className="section-title">Analytical, execution-focused, and investor-minded</h2>
               </div>
               <div className="about-split">
                 <div className="about-copy">
                   <p>
-                    Most of my learning happens where numbers meet judgment: a bank in Haiphong sizing SME exposure, a
-                    Chicago desk asking whether macro prints justify a target-price revision, and a Hanoi brand testing
-                    price and logistics on a U.S. marketplace.
+                    My work combines <span className="key-pill">financial modeling</span>, strategic research,
+                    and practical due diligence. I am especially interested in opportunities where strong{' '}
+                    <span className="key-pill">downside analysis</span> and structured judgment can improve
+                    investment outcomes.
                   </p>
                   <p>
-                    That mix keeps me honest—credit discipline on one side, market storytelling on the other—with BU
-                    coursework and club casing as the lab where I pressure-test both.
+                    Across internships and case competitions, I have learned to convert raw data into clear
+                    investment narratives that help teams make faster and better decisions.
                   </p>
                 </div>
                 <figure className="about-figure">
-                  <img src={anh2} alt="Hoang Le Vu — context" className="editorial-img" />
-                  <figcaption className="figure-caption">Boston · campus &amp; case rhythm</figcaption>
+                  <img src={anh2} alt="Phong Tran in professional setting" className="editorial-img" />
+                  <figcaption className="figure-caption">New York - learning through execution</figcaption>
                 </figure>
               </div>
               <div className="stat-grid about-stats-row">
                 {[
-                  { icon: TrendingUp, label: 'North star', val: 'Defensible calls' },
-                  { icon: BarChart3, label: 'Builds', val: 'DCF · Comps · 3-statement' },
-                  { icon: PieChart, label: 'Verticals touched', val: 'Banking · IB · CPG' },
-                  { icon: Globe, label: 'Geography', val: 'U.S. ↔ Vietnam' },
+                  { icon: TrendingUp, label: 'Current role', val: 'VC investment analysis' },
+                  { icon: BarChart3, label: 'Core work', val: 'DCF, comps, diligence' },
+                  { icon: PieChart, label: 'Sector focus', val: 'Healthcare' },
+                  { icon: Globe, label: 'Target path', val: 'Credit and private markets' },
                 ].map((item, i) => (
                   <div key={i} className="crystal-panel stat-cell">
                     <item.icon size={22} color={iconColor} strokeWidth={1.75} style={{ marginBottom: 14 }} />
@@ -389,218 +366,203 @@ function App() {
                   </div>
                 ))}
               </div>
+              </div>
             </section>
 
-            <section id="education">
+            <section id="education" className="section-band">
+              <div className="section-shell">
               <div className="section-head">
-                <span className="section-label">Study</span>
-                <h2 className="section-title">Academic core</h2>
+                <span className="section-label">Education</span>
+                <h2 className="section-title">New York University</h2>
               </div>
               <div className="crystal-panel edu-card">
-                <h3>Boston University</h3>
+                <h3>NYU Stern School of Business</h3>
                 <p className="edu-sub">
-                  Boston, MA — B.S. Business Administration (Finance) — GPA 3.93 — Aug. 2025 to May 2029
+                  New York, NY - B.S. in Finance (Minor in Data Science) - GPA 3.9 - Expected May 2028
                 </p>
                 <ul className="edu-list">
                   <li>
                     <strong style={{ color: 'var(--text)' }}>Coursework: </strong>
-                    Financial Accounting, Corporate Finance, Micro &amp; Macro, Data &amp; Business Analytics,
-                    Information Systems &amp; Technologies
+                    Corporate Finance, Accounting, Managing Investment Funds, Foundations of Finance, Debt
+                    Instruments
                   </li>
                   <li>
-                    <strong style={{ color: 'var(--text)' }}>Credentials: </strong>
-                    Corporate Finance (CFI®) · PwC Audit Simulation®
+                    <strong style={{ color: 'var(--text)' }}>Awards: </strong>
+                    NYU Restructuring Case Competition (Top 10, 2026), FTI Case Challenge (Top 4, 2026), VCG
+                    Case Competition (Runner-Up, 2025), International Math Challenge (Gold Medal, 2023)
                   </li>
                 </ul>
+              </div>
               </div>
             </section>
 
             <section className="strip-section" aria-label="Editorial photograph">
               <div className="strip-inner">
-                <img src={anh3} alt="Editorial — between study and practice" className="strip-img" />
+                <img src={anh3} alt="Learning and investing journey" className="strip-img" />
                 <div className="strip-caption">
-                  <span>Models are only useful when someone else can audit the logic.</span>
+                  <span>Strong investment decisions come from disciplined analysis.</span>
                   <span>Field note</span>
                 </div>
               </div>
             </section>
 
-            <section id="experience">
+            <section id="experience" className="section-band section-band-alt">
+              <div className="section-shell">
               <div className="section-head">
-                <span className="section-label">Roles</span>
-                <h2 className="section-title">Where I shipped work</h2>
+                <span className="section-label">Experience</span>
+                <h2 className="section-title">Professional roles</h2>
               </div>
               <div>
                 <ExperienceCard
-                  company="Military Commercial Joint Stock Bank"
-                  role="Investor Relation Intern"
-                  location="Hai Phong, Vietnam"
-                  date="November 2025 – January 2026"
+                  company="Golden Gate Ventures Fund Management"
+                  role="Investment Analysis Intern"
+                  location="New York, NY"
+                  date="Jan 2026 - Present"
                   descs={[
-                    'Analysed financial statements & cashflow of 100+ SME clients to evaluate repayment capacity, supporting loan structuring decisions ranging from 10–50 billion VND and ensuring alignment with risk management policies.',
-                    'Assessed SME credit worthiness using internal scoring models to recommend tailored lending terms, managing a client portfolio valued at 200 billion VND.',
-                    'Performed financial ratio analyses and audited receipts as part of client due diligence, completing 60% of preliminary assessments and improving evaluation turnaround time by 25%.',
+                    'Conduct primary and secondary research across 12+ healthcare subsectors, delivering market analysis, competitive benchmarking, and valuation support for investment decisions.',
+                    'Screen inbound pitch decks weekly and identify high-potential startups each month; support preliminary discussions on product-market fit, team quality, and thesis alignment.',
+                    'Support diligence on potential $2M-$5M investments, including market sizing and competitor mapping to help draft investment memoranda.',
                   ]}
                 />
                 <ExperienceCard
-                  company="FinBud AI"
-                  role="Financial Analyst Intern"
-                  location="Chicago, IL"
-                  date="May 2025 – August 2025"
+                  company="Integro Healthcare Services"
+                  role="Investment Summer Analyst"
+                  location="Los Angeles, CA"
+                  date="May 2025 - Oct 2025"
                   descs={[
-                    'Analysed equity valuation of 3 major companies (Tesla, Goldman Sachs, Blackstone) using DCF and comparable company analysis, supporting investment recommendations for a portfolio valued at over $50M.',
-                    'Conducted market research across 10+ macroeconomic indicators and sector trends, identifying key valuation drivers that informed a 15% adjustment in target price estimates.',
-                    'Designed and presented an investment recommendation deck summarizing valuation insights and strategic outlook, influencing 5 potential investment opportunities and guiding internal investment decisions.',
+                    'Built Excel-based 10-year budget models for a senior healthcare facility project and stress-tested assumptions against a target 15% IRR.',
+                    'Analyzed profitability, market trends, and investment risk across 15+ states using 50+ comparable projects to support strategic project recommendations.',
+                    'Evaluated 20+ offering memoranda and developed concise investment briefs for REIT, LBO, and roll-up opportunities.',
                   ]}
                 />
                 <ExperienceCard
-                  company="Hermore Cosmetics"
-                  role="Financial Analyst Intern"
-                  location="Hanoi, Vietnam"
-                  date="June 2024 – September 2024"
+                  company="Cedar Oak Capital"
+                  role="Investment Research Summer Analyst, Healthcare Team"
+                  location="Remote"
+                  date="May 2025 - Aug 2025"
                   descs={[
-                    'Conducted Profit & Loss analyses for 15+ SKUs as part of Amazon U.S. expansion strategy, identifying cost drivers and supporting pricing adjustments that improved projected net margins by 12%.',
-                    'Evaluated pricing strategy and margin impact using contribution margin and break-even analysis, informing competitive positioning for products targeting a $200K annual revenue segment.',
-                    'Analysed logistics cost structure across cross-border fulfillment channels, proposing efficiency improvements that reduced estimated per-unit shipping costs by 18% and enhanced overall supply chain performance.',
+                    'Prepared 9 investment decks on healthcare buyout targets, covering financial snapshots, landscape analysis, strategic rationale, and risk considerations.',
+                    'Led weekly strategy meetings for a 5-person team and supported outreach to 300+ healthcare organizations to source opportunities.',
+                    'Evaluated ownership structures and potential acquisition synergies while supporting strategic work for portfolio companies.',
+                  ]}
+                />
+                <ExperienceCard
+                  company="IDG Capital"
+                  role="Investment Analyst Intern"
+                  location="Remote"
+                  date="Sep 2024 - Dec 2024"
+                  descs={[
+                    'Conducted healthcare market and competitive research, benchmarking against 10 peers to support a $7M investment memorandum.',
+                    'Performed due diligence across 40+ companies and reviewed 100+ financial reports to identify trends and actionable insights.',
+                    'Collaborated with investment professionals in weekly strategy sessions focused on return-oriented execution.',
                   ]}
                 />
               </div>
+              </div>
             </section>
 
-            <section id="leadership">
+            <section id="leadership" className="section-band">
+              <div className="section-shell">
               <div className="section-head">
-                <span className="section-label">Lead</span>
-                <h2 className="section-title">Campus ownership</h2>
+                <span className="section-label">Leadership</span>
+                <h2 className="section-title">Campus involvement</h2>
               </div>
               <div className="lead-grid">
                 <motion.div
                   className="crystal-panel lead-card"
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
                   viewport={{ once: true }}
                 >
-                  <div className="lead-meta">Ongoing</div>
-                  <h3>Boston University Accounting Association</h3>
+                  <div className="lead-meta">Apr 2026 - Present</div>
+                  <h3>NYU Business and Finance Group</h3>
                   <p className="lead-role" style={{ color: 'var(--text-dim)', fontStyle: 'italic', marginBottom: 12 }}>
-                    Director of Casing
+                    Head of Outreach &amp; Operations
                   </p>
                   <p>
-                    Running the Learning Case Program: weekly cadence, member comms at 50+, and tight prep for
-                    student-led presentations.
+                    Lead weekly finance sessions and organize networking programs connecting 100+ students with
+                    industry professionals.
                   </p>
                 </motion.div>
                 <motion.div
                   className="crystal-panel lead-card"
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.06 }}
                 >
-                  <div className="lead-meta">Ongoing</div>
-                  <h3>Boston University Financial Modeling Club</h3>
+                  <div className="lead-meta">Sep 2024 - Present</div>
+                  <h3>NYU Special Situations Investing Group</h3>
                   <p className="lead-role" style={{ color: 'var(--text-dim)', fontStyle: 'italic', marginBottom: 12 }}>
-                    Junior Analyst
+                    Special Situations Team Member
                   </p>
                   <p>
-                    Deeper valuation drills plus mentorship on recruiting, technical screens, and how to network without
-                    sounding rehearsed.
+                    Analyze distressed companies and restructuring cases; led a 5-person team in a special
+                    situations case competition.
                   </p>
                 </motion.div>
               </div>
-            </section>
-
-            <section id="projects">
-              <div className="section-head">
-                <span className="section-label">Cases</span>
-                <h2 className="section-title">Long-form builds</h2>
-              </div>
-              <div className="project-grid">
-                <ProjectCard
-                  badge="Real assets"
-                  title="Blackstone multifamily housing analysis"
-                  bullets={[
-                    {
-                      label: 'Underwrite:',
-                      text: 'Ten-year DCF with rent roll, opex, and exit—IRR and valuation tied to explicit assumptions.',
-                    },
-                    {
-                      label: 'Risk:',
-                      text: 'Sensitivities on cap rate, occupancy, and rent growth to show where the thesis breaks.',
-                    },
-                  ]}
-                />
-                <ProjectCard
-                  badge="Markets"
-                  title="Goldman Sachs equity research analysis"
-                  bullets={[
-                    {
-                      label: 'Price:',
-                      text: 'DCF plus comps with implied bands and a clean bull / bear framing.',
-                    },
-                    {
-                      label: 'Context:',
-                      text: 'Segment revenue bridges (IB, markets, AM) with macro links to margin and growth.',
-                    },
-                  ]}
-                />
               </div>
             </section>
 
-            <section id="skills">
+            <section id="skills" className="section-band section-band-alt">
+              <div className="section-shell">
               <div className="section-head">
-                <span className="section-label">Stack</span>
-                <h2 className="section-title">Technical skills</h2>
+                <span className="section-label">Skills</span>
+                <h2 className="section-title">Technical stack</h2>
               </div>
               <div className="skills-container">
                 <div className="crystal-panel skill-category">
-                  <h4>Financial modeling</h4>
+                  <h4>Investment</h4>
                   <ul className="skill-list">
-                    <li>DCF</li>
-                    <li>Three-statement model</li>
-                    <li>Comparable company analysis</li>
-                    <li>Valuation</li>
-                    <li>Sensitivity analysis</li>
-                  </ul>
-                </div>
-                <div className="crystal-panel skill-category">
-                  <h4>Financial statement analysis</h4>
-                  <ul className="skill-list">
-                    <li>Ratio analysis</li>
-                    <li>Cash flow analysis</li>
-                    <li>Profitability analysis</li>
-                    <li>Liquidity analysis</li>
+                    <li>Financial modeling</li>
+                    <li>Investment analysis</li>
+                    <li>Valuation (DCF, comparables, precedent)</li>
+                    <li>Market research</li>
+                    <li>Risk analysis</li>
                   </ul>
                 </div>
                 <div className="crystal-panel skill-category">
                   <h4>Tools</h4>
                   <ul className="skill-list">
-                    <li>Microsoft Excel (Pivot Tables, VLOOKUP)</li>
-                    <li>PowerPoint</li>
-                    <li>SQL</li>
+                    <li>Excel, PowerPoint, Bloomberg Terminal</li>
+                    <li>LSEG, Capital IQ, PitchBook, Morningstar Direct</li>
+                    <li>Power BI, Tableau</li>
                   </ul>
                 </div>
                 <div className="crystal-panel skill-category">
-                  <h4>Client &amp; professional</h4>
+                  <h4>Data</h4>
                   <ul className="skill-list">
-                    <li>Presentation deck creation</li>
-                    <li>Stakeholder communication</li>
-                    <li>Data-driven decision making</li>
+                    <li>Python, SQL, JavaScript, Java, R</li>
+                    <li>Matplotlib, machine learning</li>
+                    <li>Predictive modeling</li>
+                  </ul>
+                </div>
+                <div className="crystal-panel skill-category">
+                  <h4>Communication</h4>
+                  <ul className="skill-list">
+                    <li>Investment memo writing</li>
+                    <li>Presentation deck development</li>
+                    <li>Cross-functional collaboration</li>
                   </ul>
                 </div>
               </div>
+              </div>
             </section>
 
-            <section id="contact" style={{ paddingBottom: 120 }}>
+            <section id="contact" className="section-contact" style={{ paddingBottom: 120 }}>
               <div className="contact-layout">
                 <div className="contact-photo">
-                  <img src={anh4} alt="Hoang Le Vu" />
+                  <img src={anh4} alt="Phong Tran" />
                 </div>
                 <div className="contact-inner">
                   <span className="section-label">Contact</span>
-                  <h2>Let&apos;s talk</h2>
+                  <h2>Let&apos;s connect</h2>
                   <p className="contact-lede">
-                    Internships, case collaborations, or a straight coffee chat about credit vs. equity workflows—I read
-                    every note.
+                    Open to internships and conversations across credit, private markets, and investment
+                    strategy.
                   </p>
                   <div className="contact-info">
                     <a href={`mailto:${EMAIL}`}>
@@ -615,7 +577,7 @@ function App() {
                     <span className="contact-sep">·</span>
                     <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">
                       <ExternalLink size={18} color={iconColor} strokeWidth={1.75} />
-                      linkedin.com/in/hoanglevu-tony
+                      linkedin.com/in/phong-tran
                     </a>
                   </div>
                 </div>
@@ -623,7 +585,7 @@ function App() {
             </section>
 
             <footer className="site-footer">
-              © 2026 Hoang Le Vu — single-page portfolio · built for clarity, not noise
+              © 2026 Phong Tran - investment portfolio
             </footer>
           </main>
 
