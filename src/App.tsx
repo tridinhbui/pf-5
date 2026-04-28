@@ -175,16 +175,19 @@ const LoadingScreen = () => {
 
   return (
     <motion.div className="loading-screen" exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
-      <motion.div
-        aria-hidden
-        className="loader-aurora"
-        animate={{
-          rotate: [0, 360],
-          scale: [1, 1.08, 1],
-          opacity: [0.55, 0.85, 0.55],
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
-      />
+      {/* Clip rotating blur so transforms never overflow on narrow viewports */}
+      <div className="loader-aurora-host" aria-hidden>
+        <motion.div
+          aria-hidden
+          className="loader-aurora"
+          animate={{
+            rotate: [0, 360],
+            scale: [1, 1.06, 1],
+            opacity: [0.55, 0.85, 0.55],
+          }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+        />
+      </div>
       <motion.div
         className="loader-logo"
         initial={{ opacity: 0, y: 16 }}
