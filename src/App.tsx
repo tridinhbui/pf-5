@@ -47,7 +47,7 @@ const heroItem = {
   },
 };
 
-const LINKEDIN = 'https://www.linkedin.com/in/phong-tran';
+const LINKEDIN = 'https://www.linkedin.com/in/phong-trannnn/';
 const EMAIL = 'phongtran@nyu.edu';
 const PHONE_DISPLAY = '(857) 395-2309';
 const PHONE_HREF = 'tel:+18573952309';
@@ -721,7 +721,7 @@ function App() {
                     <span className="contact-sep">·</span>
                     <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">
                       <ExternalLink size={18} color={iconColor} strokeWidth={1.75} />
-                      linkedin.com/in/phong-tran
+                      linkedin.com/in/phong-trannnn
                     </a>
                   </div>
                 </div>
